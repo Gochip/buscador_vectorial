@@ -4,7 +4,7 @@ package principal;
  *
  * @author Parisi Germán
  */
-public class Palabra {
+public class Palabra implements Comparable<Palabra>{
     private String texto;
     /**
      * Cantidad de documentos que aparece esta palabra.
@@ -43,6 +43,11 @@ public class Palabra {
 
     public void setMaxtf(int maxtf) {
         this.maxtf = maxtf;
+    }
+    
+    @Override
+    public int compareTo(Palabra o) {
+        return texto.compareTo(o.texto);
     }
 
     @Override

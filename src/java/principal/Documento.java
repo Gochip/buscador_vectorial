@@ -1,5 +1,7 @@
 package principal;
 
+import java.util.Objects;
+
 /**
  *
  * @author Parisi Germán
@@ -28,4 +30,28 @@ public class Documento {
     public void setEnlace(String enlace) {
         this.enlace = enlace;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        final Documento other = (Documento) obj;
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Documento{" + "nombre=" + nombre + ", enlace=" + enlace + '}';
+    }
+    
 }

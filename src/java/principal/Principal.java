@@ -39,7 +39,7 @@ public class Principal extends HttpServlet {
             out.println("<h1>Enlaces</h1>");
             String frase = request.getParameter("buscar");
             Controlador controlador = new Controlador();
-            List<Documento> documentos = controlador.buscar(frase);
+            List<? extends Documento> documentos = controlador.buscar(frase, 10);
             for (Documento documento : documentos) {
                 out.print("<li>");
                 out.print("<a href=\"");

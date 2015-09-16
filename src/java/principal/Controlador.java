@@ -1,8 +1,12 @@
 package principal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
+import javafx.scene.control.TreeSortMode;
 
 /**
  *
@@ -10,14 +14,22 @@ import java.util.List;
  */
 public class Controlador {
 
-    public Controlador() {
+    private Vocabulario vocabulario;
 
+    public Controlador() {
+        this.vocabulario = cargarVocabulario();
     }
 
-    public List<Documento> buscar(String frase) {
-        ArrayList<Documento> candidatos = new ArrayList<>();
+    /**
+     * Algoritmo principal del buscador vectorial. Recibe una frase a buscar y
+     * retorna los R documentos más relevantes.
+     *
+     * @param frase
+     * @return
+     */
+    public List<? extends Documento> buscar(String frase, int r) {
+        ArrayList<NodoDocumento> candidatos = new ArrayList<>();
         Posteo posteo = new Posteo();
-        int r = 10;
         LinkedList<Palabra> palabras = getPalabras(frase);
 
         for (Palabra palabra : palabras) {
@@ -28,8 +40,28 @@ public class Controlador {
         return candidatos.subList(0, Math.min(r, candidatos.size()));
     }
 
-    private void mejorarEnElRanking(List<Documento> candidatos, List<Documento> nuevosCandidatos) {
-        candidatos.addAll(nuevosCandidatos);
+    /**
+     * Mejora en el ranking si el nuevo candidato ya era un candidato.
+     *
+     * @param candidatos
+     * @param nuevosCandidatos
+     */
+    private void mejorarEnElRanking(List<NodoDocumento> candidatos, List<Documento> nuevosCandidatos) {
+        for (Documento nuevo : nuevosCandidatos) {
+            int indiceNuevoCandidato = candidatos.indexOf(nuevo);
+            System.out.println("INDICE" + indiceNuevoCandidato);
+            if (indiceNuevoCandidato < 0) {
+                // Nuevo...
+                NodoDocumento n = new NodoDocumento(nuevo, 1);
+                candidatos.add(n);
+            } else {
+                // Ya era un candidato...
+                NodoDocumento nodo = candidatos.get(indiceNuevoCandidato);
+                nodo.addApariciones();
+            }
+        }
+        System.out.println(candidatos);
+        candidatos.sort(new ComparadorInverso());
     }
 
     /**
@@ -40,32 +72,66 @@ public class Controlador {
      */
     private LinkedList<Palabra> getPalabras(String frase) {
         String partes[] = frase.split(" ");
-        LinkedList<Palabra> palabras = new LinkedList<>();
+        TreeSet<Palabra> arbol = new TreeSet<>();
         for (int i = 0; i < partes.length; i++) {
             String parte = partes[i];
-            palabras.add(new Palabra(parte, 5, 3));
+            Palabra palabra = vocabulario.getPalabra(parte);
+            if (palabra != null) {
+                arbol.add(palabra);
+            }
         }
-        return palabras;
+        return new LinkedList<>(arbol);
     }
 
     /**
-     * 
-     * @return 
-     * @deprecated 
+     *
+     * @return
      */
     private Vocabulario cargarVocabulario() {
-        Vocabulario vocabulario = new Vocabulario();
+        Vocabulario v = new Vocabulario();
         Palabra pal1 = new Palabra("computadora", 10, 5);
         Palabra pal2 = new Palabra("notebook", 15, 4);
         Palabra pal3 = new Palabra("problema", 20, 8);
         Palabra pal4 = new Palabra("mesa", 2, 2);
         Palabra pal5 = new Palabra("votar", 5, 20);
-        vocabulario.putPalabra(pal1.getTexto(), pal1);
-        vocabulario.putPalabra(pal2.getTexto(), pal2);
-        vocabulario.putPalabra(pal3.getTexto(), pal3);
-        vocabulario.putPalabra(pal4.getTexto(), pal4);
-        vocabulario.putPalabra(pal5.getTexto(), pal5);
-        return vocabulario;
+        v.putPalabra(pal1.getTexto(), pal1);
+        v.putPalabra(pal2.getTexto(), pal2);
+        v.putPalabra(pal3.getTexto(), pal3);
+        v.putPalabra(pal4.getTexto(), pal4);
+        v.putPalabra(pal5.getTexto(), pal5);
+        return v;
+    }
+
+}
+
+class NodoDocumento extends Documento {
+
+    private int apariciones;
+
+    public NodoDocumento(Documento documento, int apariciones) {
+        this(documento.getNombre(), documento.getEnlace(), apariciones);
+    }
+
+    public NodoDocumento(String nombre, String enlace, int apariciones) {
+        super(nombre, enlace);
+        this.apariciones = apariciones;
+    }
+
+    public void addApariciones() {
+        this.apariciones++;
+    }
+
+    public int getApariciones() {
+        return this.apariciones;
+    }
+
+}
+
+class ComparadorInverso implements Comparator<NodoDocumento> {
+
+    @Override
+    public int compare(NodoDocumento o1, NodoDocumento o2) {
+        return - o1.getApariciones() + o2.getApariciones();
     }
 
 }
