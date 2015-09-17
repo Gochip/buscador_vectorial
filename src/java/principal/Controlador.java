@@ -89,11 +89,11 @@ public class Controlador {
      */
     private Vocabulario cargarVocabulario() {
         Vocabulario v = new Vocabulario();
-        Palabra pal1 = new Palabra("computadora", 10, 5);
-        Palabra pal2 = new Palabra("notebook", 15, 4);
-        Palabra pal3 = new Palabra("problema", 20, 8);
-        Palabra pal4 = new Palabra("mesa", 2, 2);
-        Palabra pal5 = new Palabra("votar", 5, 20);
+        Palabra pal1 = new Palabra("computadora", 3, 8);
+        Palabra pal2 = new Palabra("notebook", 2, 6);
+        Palabra pal3 = new Palabra("problema", 2, 5);
+        Palabra pal4 = new Palabra("mesa", 4, 5);
+        Palabra pal5 = new Palabra("votar", 3, 15);
         v.putPalabra(pal1.getTexto(), pal1);
         v.putPalabra(pal2.getTexto(), pal2);
         v.putPalabra(pal3.getTexto(), pal3);

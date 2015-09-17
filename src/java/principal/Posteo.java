@@ -1,6 +1,13 @@
 package principal;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -9,16 +16,43 @@ import java.util.ArrayList;
 public class Posteo {
 
     public ArrayList<Documento> obtenerCandidatos(Palabra palabra, int r) {
+        ImplementacionPosteo posteo = new PosteoBaseDatos();
+        return posteo.obtenerCandidatos(palabra, r);
+    }
+}
+
+interface ImplementacionPosteo {
+
+    public ArrayList<Documento> obtenerCandidatos(Palabra palabra, int r);
+}
+
+class PosteoBaseDatos implements ImplementacionPosteo {
+
+    @Override
+    public ArrayList<Documento> obtenerCandidatos(Palabra palabra, int r) {
         ArrayList<Documento> documentos = new ArrayList<>();
-        String texto = palabra.getTexto();
-        if (texto.equals("computadora")) {
-            documentos.add(new Documento("Google", "http://www.google.com"));
-            documentos.add(new Documento("PaBex", "http://pabex.com.ar"));
-        } else if (texto.equals("votar")) {
-            documentos.add(new Documento("Facebook", "http://www.faceboook.com"));
-            documentos.add(new Documento("PaBex", "http://pabex.com.ar"));
-            documentos.add(new Documento("Javahispano", "http://www.javahispano.org"));
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/buscador_vectorial?user=root&password=Gochi199236");
+            Statement st = con.createStatement();
+            String consulta = "SELECT d.nombre AS nombre, d.enlace AS enlace FROM posteo AS p INNER JOIN documentos AS d ON(p.id_documento=d.id) "
+                                         + "INNER JOIN vocabulario AS v ON(p.id_vocabulario=v.id) "
+                                         + "WHERE v.texto='" + palabra.getTexto() + "' "
+                                         + "ORDER BY tf DESC LIMIT " + r;
+            System.out.println(consulta);
+            ResultSet rs = st.executeQuery(consulta);
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String enlace = rs.getString("enlace");
+                Documento documento = new Documento(nombre, enlace);
+                documentos.add(documento);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PosteoBaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PosteoBaseDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return documentos;
     }
+
 }
