@@ -10,6 +10,8 @@ CREATE TABLE documentos(
 CREATE TABLE vocabulario(
     id INT NOT NULL AUTO_INCREMENT,
     texto VARCHAR(60),
+    nr INT, -- Cantidad de documento en la que aparece.
+    maxtf INT, -- Frecuencia máxima de esta palabra en un documento.
     PRIMARY KEY(id)
 );
 CREATE TABLE posteo(
@@ -25,11 +27,11 @@ INSERT INTO documentos (nombre, enlace) VALUES ('Twitter', 'http://www.twitter.c
 INSERT INTO documentos (nombre, enlace) VALUES ('PaBex', 'http://www.pabex.com.ar');
 INSERT INTO documentos (nombre, enlace) VALUES ('JavaHispano', 'http://www.javahispano.org');
 
-INSERT INTO vocabulario (texto) VALUES ('computadora');
-INSERT INTO vocabulario (texto) VALUES ('notebook');
-INSERT INTO vocabulario (texto) VALUES ('problema');
-INSERT INTO vocabulario (texto) VALUES ('mesa');
-INSERT INTO vocabulario (texto) VALUES ('votar');
+INSERT INTO vocabulario (texto, nr, maxtf) VALUES ('computadora', 3, 8);
+INSERT INTO vocabulario (texto, nr, maxtf) VALUES ('notebook', 2, 6);
+INSERT INTO vocabulario (texto, nr, maxtf) VALUES ('problema', 2, 5);
+INSERT INTO vocabulario (texto, nr, maxtf) VALUES ('mesa', 4, 5);
+INSERT INTO vocabulario (texto, nr, maxtf) VALUES ('votar', 3, 15);
 
 INSERT INTO posteo (tf, id_documento, id_vocabulario) VALUES (5, 1, 1);
 INSERT INTO posteo (tf, id_documento, id_vocabulario) VALUES (2, 2, 1);

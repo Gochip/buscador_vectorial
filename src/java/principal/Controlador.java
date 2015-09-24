@@ -1,11 +1,18 @@
 package principal;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.TreeSortMode;
 
 /**
@@ -84,21 +91,30 @@ public class Controlador {
     }
 
     /**
-     *
+     * Carga el vocabulario con el nr y maxtf.
      * @return
      */
     private Vocabulario cargarVocabulario() {
         Vocabulario v = new Vocabulario();
-        Palabra pal1 = new Palabra("computadora", 3, 8);
-        Palabra pal2 = new Palabra("notebook", 2, 6);
-        Palabra pal3 = new Palabra("problema", 2, 5);
-        Palabra pal4 = new Palabra("mesa", 4, 5);
-        Palabra pal5 = new Palabra("votar", 3, 15);
-        v.putPalabra(pal1.getTexto(), pal1);
-        v.putPalabra(pal2.getTexto(), pal2);
-        v.putPalabra(pal3.getTexto(), pal3);
-        v.putPalabra(pal4.getTexto(), pal4);
-        v.putPalabra(pal5.getTexto(), pal5);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/buscador_vectorial?user=root&password=Gochi199236");
+            Statement st = con.createStatement();
+            String consulta = "SELECT texto, nr, maxtf FROM vocabulario AS v ";
+
+            ResultSet rs = st.executeQuery(consulta);
+            while (rs.next()) {
+                String texto = rs.getString("texto");
+                int nr = rs.getInt("nr");
+                int maxtf = rs.getInt("maxtf");
+                Palabra palabra = new Palabra(texto, nr, maxtf);
+                v.putPalabra(palabra.getTexto(), palabra);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PosteoBaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PosteoBaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return v;
     }
 
@@ -131,7 +147,7 @@ class ComparadorInverso implements Comparator<NodoDocumento> {
 
     @Override
     public int compare(NodoDocumento o1, NodoDocumento o2) {
-        return - o1.getApariciones() + o2.getApariciones();
+        return -o1.getApariciones() + o2.getApariciones();
     }
 
 }
