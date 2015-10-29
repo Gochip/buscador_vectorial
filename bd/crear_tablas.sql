@@ -6,20 +6,20 @@ CREATE TABLE documentos(
     nombre VARCHAR(60),
     enlace VARCHAR(500),
     PRIMARY KEY(id)
-);
+)ENGINE MyISAM;
 CREATE TABLE vocabulario(
     id INT NOT NULL AUTO_INCREMENT,
     texto VARCHAR(60),
     nr INT, -- Cantidad de documento en la que aparece.
     maxtf INT, -- Frecuencia máxima de esta palabra en un documento.
     PRIMARY KEY(id)
-);
+)ENGINE MyISAM;
 CREATE TABLE posteo(
     tf INT NOT NULL,
     id_documento INT NOT NULL,
     id_vocabulario INT NOT NULL,
     PRIMARY KEY(id_documento, id_vocabulario)
-);
+)ENGINE MyISAM;
 
 INSERT INTO documentos (nombre, enlace) VALUES ('Google', 'http://www.google.com');
 INSERT INTO documentos (nombre, enlace) VALUES ('Facebook', 'http://www.facebook.com');
