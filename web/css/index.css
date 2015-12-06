@@ -1,0 +1,14 @@
+#divTitulo{
+    margin: 50px;
+    font-size: 24px;
+    text-align: center;
+}
+#txtBuscar{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 100px;
+    padding: 5px;
+}
+#btnBuscar{
+    padding: 5px;
+}
