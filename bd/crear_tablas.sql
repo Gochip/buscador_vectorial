@@ -2,7 +2,7 @@ CREATE DATABASE buscador_vectorial;
 USE buscador_vectorial;
 
 CREATE TABLE tipos_archivos(
-    id INT,
+    id INT NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(60),
     PRIMARY KEY(id)
 )ENGINE MyISAM;
