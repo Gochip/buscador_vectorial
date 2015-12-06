@@ -2,6 +2,7 @@ package principal;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Principal extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Principal</title>");            
+            out.println("<title>Servlet Principal</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Enlaces</h1>");
@@ -53,7 +54,7 @@ public class Principal extends HttpServlet {
             out.println("</html>");
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

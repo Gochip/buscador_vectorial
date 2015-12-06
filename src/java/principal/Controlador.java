@@ -38,7 +38,7 @@ public class Controlador {
         ArrayList<NodoDocumento> candidatos = new ArrayList<>();
         Posteo posteo = new Posteo();
         LinkedList<Palabra> palabras = getPalabras(frase);
-
+        
         for (Palabra palabra : palabras) {
             List<Documento> cantidatosDePalabra = posteo.obtenerCandidatos(palabra, r);
             mejorarEnElRanking(candidatos, cantidatosDePalabra);
@@ -56,7 +56,6 @@ public class Controlador {
     private void mejorarEnElRanking(List<NodoDocumento> candidatos, List<Documento> nuevosCandidatos) {
         for (Documento nuevo : nuevosCandidatos) {
             int indiceNuevoCandidato = candidatos.indexOf(nuevo);
-            System.out.println("INDICE" + indiceNuevoCandidato);
             if (indiceNuevoCandidato < 0) {
                 // Nuevo...
                 NodoDocumento n = new NodoDocumento(nuevo, 1);
@@ -67,7 +66,6 @@ public class Controlador {
                 nodo.addApariciones();
             }
         }
-        System.out.println(candidatos);
         candidatos.sort(new ComparadorInverso());
     }
 
