@@ -1,20 +1,20 @@
 package principal;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Germán Parisi
- */
-public class Principal extends HttpServlet {
+@WebServlet(name = "ConsultarContenido", urlPatterns = {"/ConsultarContenido"})
+public class ConsultarContenido extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -27,33 +27,29 @@ public class Principal extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Principal</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Enlaces</h1>");
-            String frase = request.getParameter("buscar");
-            Controlador controlador = new Controlador();
-            List<? extends Documento> documentos = controlador.buscar(frase, 10);
-            for (Documento documento : documentos) {
-                out.print("<li>");
-                out.print("<a href=\"ConsultarContenido?contenido=");
-                out.print(documento.getEnlace());
-                out.print("\">");
-                out.print(documento.getNombre());
-                out.print("</a>");
-                out.print("</li>");
+        String contenido = request.getParameter("contenido");
+        contenido = contenido.replace("file:", "");
+        System.out.println(contenido);
+        File archivoAEnviar = new File(contenido);
+        if (archivoAEnviar.exists()) {
+            String fileName = archivoAEnviar.getName();
+            //String contentType = "application/vnd.ms-excel";
+            String contentType = "application/pdf";
+            //response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+            response.setContentType(contentType);
+            response.setHeader("Content-Disposition", "filename=\"" + fileName + "\"");
+            response.setContentLength((int) archivoAEnviar.length());
+
+            FileInputStream fileInputStream = new FileInputStream(archivoAEnviar);
+            try (OutputStream responseOutputStream = response.getOutputStream()) {
+                int bytes;
+                while ((bytes = fileInputStream.read()) != -1) {
+                    responseOutputStream.write(bytes);
+                }
             }
-            out.println("</body>");
-            out.println("</html>");
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
