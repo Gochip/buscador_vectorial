@@ -18,7 +18,7 @@ CREATE TABLE vocabulario(
     id INT NOT NULL AUTO_INCREMENT,
     texto VARCHAR(60),
     nr INT, -- Cantidad de documento en la que aparece.
-    maxtf INT, -- Frecuencia máxima de esta palabra en un documento.
+    maxtf INT DEFAULT 0, -- Frecuencia máxima de esta palabra en un documento.
     PRIMARY KEY(id)
 )ENGINE MyISAM;
 CREATE TABLE posteo(
