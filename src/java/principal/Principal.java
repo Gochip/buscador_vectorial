@@ -26,14 +26,12 @@ public class Principal extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String frase = request.getParameter("buscar");
+        Controlador controlador = new Controlador();
+        List<? extends Documento> documentos = controlador.buscar(frase, 10);
+        request.getSession().setAttribute("documentos", documentos);
         response.sendRedirect("/buscador_vectorial/enlaces.jsp");
-        try (PrintWriter out = response.getWriter()) {
-            String frase = request.getParameter("buscar");
-            Controlador controlador = new Controlador();
-            List<? extends Documento> documentos = controlador.buscar(frase, 10);
-            request.getSession().setAttribute("documentos", documentos);
-        }
-            /* TODO output your page here. You may use following sample code. */
+        /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
