@@ -2,9 +2,6 @@ package principal;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,30 +26,36 @@ public class Principal extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        response.sendRedirect("/buscador_vectorial/enlaces.jsp");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Principal</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Enlaces</h1>");
             String frase = request.getParameter("buscar");
             Controlador controlador = new Controlador();
             List<? extends Documento> documentos = controlador.buscar(frase, 10);
-            for (Documento documento : documentos) {
-                out.print("<li>");
-                out.print("<a href=\"ConsultarContenido?contenido=");
-                out.print(documento.getEnlace());
-                out.print("\">");
-                out.print(documento.getNombre());
-                out.print("</a>");
-                out.print("</li>");
-            }
-            out.println("</body>");
-            out.println("</html>");
+            request.getSession().setAttribute("documentos", documentos);
         }
+            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet Principal</title>");
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Enlaces</h1>");
+//            String frase = request.getParameter("buscar");
+//            Controlador controlador = new Controlador();
+//            List<? extends Documento> documentos = controlador.buscar(frase, 10);
+//            for (Documento documento : documentos) {
+//                out.print("<li>");
+//                out.print("<a href=\"ConsultarContenido?contenido=");
+//                out.print(documento.getEnlace());
+//                out.print("\">");
+//                out.print(documento.getNombre());
+//                out.print("</a>");
+//                out.print("</li>");
+//            }
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
