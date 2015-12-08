@@ -33,7 +33,7 @@ class PosteoBaseDatos implements ImplementacionPosteo {
         ArrayList<Documento> documentos = new ArrayList<>();
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/buscador_vectorial?user=root&password=Gochi199236");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/" + ConfiguracionInicial.BD + "?user=" + ConfiguracionInicial.USER + "&password=" + ConfiguracionInicial.PASS);
             Statement st = con.createStatement();
             String consulta = "SELECT d.nombre AS nombre, d.enlace AS enlace FROM posteo AS p INNER JOIN documentos AS d ON(p.id_documento=d.id) "
                                          + "INNER JOIN vocabulario AS v ON(p.id_vocabulario=v.id) "
