@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ConsultarContenido", urlPatterns = {"/ConsultarContenido"})
 public class ConsultarContenido extends HttpServlet {
 
-    public static final String directorioArchivos = "/home/gochi/Documentos/datos_dlc_pdf";
+    public static final String directorioArchivos = "/home/gochi/Documentos/DLC_PDF_V2";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,6 +29,7 @@ public class ConsultarContenido extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String contenido = request.getParameter("contenido");
+        contenido = contenido.replace('\\', '/');
         contenido = directorioArchivos + contenido;
         File archivoAEnviar = new File(contenido);
         if (archivoAEnviar.exists()) {
