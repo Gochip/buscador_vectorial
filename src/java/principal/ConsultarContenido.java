@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ConsultarContenido", urlPatterns = {"/ConsultarContenido"})
 public class ConsultarContenido extends HttpServlet {
 
-    public static final String directorioArchivos = "/home/gochi/Documentos/DLC/DLC_PDF_V2";
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,7 +28,7 @@ public class ConsultarContenido extends HttpServlet {
         String contenido = request.getParameter("contenido");
 
         contenido = contenido.replace('\\', '/');
-        contenido = directorioArchivos + contenido;
+        contenido = ConfiguracionInicial.DIRECTORIO_ARCHIVOS + contenido;
         File archivoAEnviar = new File(contenido);
         if (archivoAEnviar.exists()) {
             String fileName = archivoAEnviar.getName();

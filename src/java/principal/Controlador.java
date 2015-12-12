@@ -38,7 +38,7 @@ public class Controlador {
         ArrayList<NodoDocumento> candidatos = new ArrayList<>();
         Posteo posteo = new Posteo();
         LinkedList<Palabra> palabras = getPalabras(frase);
-        
+
         for (Palabra palabra : palabras) {
             List<Documento> cantidatosDePalabra = posteo.obtenerCandidatos(palabra, r);
             mejorarEnElRanking(candidatos, cantidatosDePalabra);
@@ -90,13 +90,14 @@ public class Controlador {
 
     /**
      * Carga el vocabulario con el nr y maxtf.
+     *
      * @return
      */
     private Vocabulario cargarVocabulario() {
         Vocabulario v = new Vocabulario();
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/buscador_vectorial?user=root&password=Gochi199236");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/" + ConfiguracionInicial.BD + "?user=" + ConfiguracionInicial.USER + "&password=" + ConfiguracionInicial.PASS);
             Statement st = con.createStatement();
             String consulta = "SELECT texto, nr, maxtf FROM vocabulario AS v ";
 
