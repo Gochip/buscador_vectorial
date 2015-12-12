@@ -19,12 +19,18 @@
         <ul>
             <%
                 List<? extends Documento> documentos = (List<? extends Documento>) request.getSession().getAttribute("documentos");
-                for (Documento documento : documentos) {
-                    String enlace = documento.getEnlace();
-                    String nombre = documento.getNombre();
-            %><li>
-                <a href="ConsultarContenido?contenido=<%= enlace%>" target="_blank"><%= nombre%></a>
-            </li><%
+                if (documentos.isEmpty()) {
+                    %>
+                    <li>No se encontraron documentos</li>
+                    <%
+                } else {
+                    for (Documento documento : documentos) {
+                        String enlace = documento.getEnlace();
+                        String nombre = documento.getNombre();
+                    %><li>
+                        <a href="ConsultarContenido?contenido=<%= enlace%>" target="_blank"><%= nombre%></a>
+                    </li><%
+                    }
                 }
             %>
         </ul>

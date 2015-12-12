@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ConsultarContenido", urlPatterns = {"/ConsultarContenido"})
 public class ConsultarContenido extends HttpServlet {
 
-    public static final String directorioArchivos = "/home/gochi/Documentos/DLC_PDF_V2";
+    public static final String directorioArchivos = "/home/gochi/Documentos/DLC/DLC_PDF_V2";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -28,7 +26,9 @@ public class ConsultarContenido extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String contenido = request.getParameter("contenido");
+
         contenido = contenido.replace('\\', '/');
         contenido = directorioArchivos + contenido;
         File archivoAEnviar = new File(contenido);

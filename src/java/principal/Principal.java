@@ -28,7 +28,7 @@ public class Principal extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String frase = request.getParameter("buscar");
         Controlador controlador = new Controlador();
-        List<? extends Documento> documentos = controlador.buscar(frase, 10);
+        List<? extends Documento> documentos = controlador.buscar(frase, 15);
         request.getSession().setAttribute("documentos", documentos);
         response.sendRedirect("/buscador_vectorial/enlaces.jsp");
         /* TODO output your page here. You may use following sample code. */

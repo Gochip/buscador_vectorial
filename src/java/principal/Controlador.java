@@ -43,7 +43,7 @@ public class Controlador {
             List<Documento> cantidatosDePalabra = posteo.obtenerCandidatos(palabra, r);
             mejorarEnElRanking(candidatos, cantidatosDePalabra);
         }
-
+        
         return candidatos.subList(0, Math.min(r, candidatos.size()));
     }
 

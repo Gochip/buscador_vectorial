@@ -39,7 +39,6 @@ class PosteoBaseDatos implements ImplementacionPosteo {
                                          + "INNER JOIN vocabulario AS v ON(p.id_vocabulario=v.id) "
                                          + "WHERE v.texto='" + palabra.getTexto() + "' "
                                          + "ORDER BY tf DESC LIMIT " + r;
-            System.out.println(consulta);
             ResultSet rs = st.executeQuery(consulta);
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
