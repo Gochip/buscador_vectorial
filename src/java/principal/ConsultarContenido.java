@@ -30,11 +30,16 @@ public class ConsultarContenido extends HttpServlet {
         contenido = contenido.replace('\\', '/');
         contenido = ConfiguracionInicial.DIRECTORIO_ARCHIVOS + contenido;
         File archivoAEnviar = new File(contenido);
+
         if (archivoAEnviar.exists()) {
             String fileName = archivoAEnviar.getName();
-            //String contentType = "application/vnd.ms-excel";
             String contentType = "application/pdf";
-            //response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+            if (fileName.endsWith(".pdf")) {
+                //response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+                contentType = "application/pdf";
+            } else if (fileName.endsWith(".html")) {
+                contentType = "text/html";
+            }
             response.setContentType(contentType);
             response.setHeader("Content-Disposition", "filename=\"" + fileName + "\"");
             response.setContentLength((int) archivoAEnviar.length());
@@ -46,7 +51,10 @@ public class ConsultarContenido extends HttpServlet {
                     responseOutputStream.write(bytes);
                 }
             }
+
+            //String contentType = "application/vnd.ms-excel";
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

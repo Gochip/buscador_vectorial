@@ -39,6 +39,7 @@ public class Controlador {
         Posteo posteo = new Posteo();
         LinkedList<Palabra> palabras = getPalabras(frase);
 
+        System.out.println(palabras);
         for (Palabra palabra : palabras) {
             List<Documento> cantidatosDePalabra = posteo.obtenerCandidatos(palabra, r);
             mejorarEnElRanking(candidatos, cantidatosDePalabra);

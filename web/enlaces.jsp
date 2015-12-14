@@ -15,6 +15,7 @@
         <link rel="stylesheet" type="text/css" href="css/enlaces.css" />
     </head>
     <body>
+        <a href="index.html" >Volver</a>
         <div id="divTitulo">Documentos encontrados</div>
         <ul>
             <%
