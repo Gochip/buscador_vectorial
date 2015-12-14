@@ -17,6 +17,8 @@
     <body>
         <a href="index.html" >Volver</a>
         <div id="divTitulo">Documentos encontrados</div>
+        <div>La frase buscada fue "<%= request.getSession().getAttribute("frase") %>"</div>
+        <div>Tardó <%= request.getSession().getAttribute("tiempoBusqueda") %> ms</div>
         <ul>
             <%
                 List<? extends Documento> documentos = (List<? extends Documento>) request.getSession().getAttribute("documentos");

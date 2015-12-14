@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -28,8 +29,14 @@ public class Principal extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String frase = request.getParameter("buscar");
         Controlador controlador = new Controlador();
+        long tiempoInicial = System.currentTimeMillis();
         List<? extends Documento> documentos = controlador.buscar(frase, 15);
-        request.getSession().setAttribute("documentos", documentos);
+        long tiempoFinal = System.currentTimeMillis();
+        long tiempoBusqueda = tiempoFinal - tiempoInicial;
+        HttpSession sesion = request.getSession();
+        sesion.setAttribute("documentos", documentos);
+        sesion.setAttribute("frase", frase);
+        sesion.setAttribute("tiempoBusqueda", tiempoBusqueda);
         response.sendRedirect("/buscador_vectorial/enlaces.jsp");
         /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
