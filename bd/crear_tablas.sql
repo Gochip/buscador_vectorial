@@ -12,6 +12,7 @@ CREATE TABLE documentos(
     enlace VARCHAR(200),
     otro VARCHAR(500),
     id_tipo_archivo INT,
+    hash_archivo VARCHAR(32) NOT NULL,
     PRIMARY KEY(id)
 )ENGINE MyISAM;
 CREATE TABLE vocabulario(
