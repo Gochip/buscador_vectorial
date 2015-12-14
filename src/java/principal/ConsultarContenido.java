@@ -2,8 +2,12 @@ package principal;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,15 +38,20 @@ public class ConsultarContenido extends HttpServlet {
         if (archivoAEnviar.exists()) {
             String fileName = archivoAEnviar.getName();
             String contentType = "application/pdf";
+            byte[] infoExtra = null;
+            int tamInfoExtra = 0;
             if (fileName.endsWith(".pdf")) {
                 //response = (HttpServletResponse) ctx.getExternalContext().getResponse();
                 contentType = "application/pdf";
             } else if (fileName.endsWith(".html")) {
                 contentType = "text/html";
+                String urlOriginal = obtenerURLOriginal(archivoAEnviar);
+                infoExtra = urlOriginal.getBytes();
+                tamInfoExtra = infoExtra.length;
             }
             response.setContentType(contentType);
             response.setHeader("Content-Disposition", "filename=\"" + fileName + "\"");
-            response.setContentLength((int) archivoAEnviar.length());
+            response.setContentLength((int) archivoAEnviar.length() + tamInfoExtra);
 
             FileInputStream fileInputStream = new FileInputStream(archivoAEnviar);
             try (OutputStream responseOutputStream = response.getOutputStream()) {
@@ -50,8 +59,10 @@ public class ConsultarContenido extends HttpServlet {
                 while ((bytes = fileInputStream.read()) != -1) {
                     responseOutputStream.write(bytes);
                 }
+                if (tamInfoExtra > 0) {
+                    responseOutputStream.write(infoExtra, 0, tamInfoExtra);
+                }
             }
-
             //String contentType = "application/vnd.ms-excel";
         }
 
@@ -95,5 +106,35 @@ public class ConsultarContenido extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String obtenerURLOriginal(File html) {
+        try {
+            Scanner sc = new Scanner(html);
+            String primerLinea = sc.nextLine();
+            primerLinea = primerLinea.substring(10, primerLinea.length() - 3);
+
+            String codigo = "<script>"
+                    + "var parrafo = document.createElement('p');"
+                    + "var enlace = document.createElement('a');"
+                    + "var contenido = document.createTextNode('Ir al original');"
+                    + "enlace.appendChild(contenido);"
+                    + "enlace.href = '" + primerLinea + "';"
+                    + "parrafo.appendChild(enlace);"
+                    + "parrafo.style.position='absolute';"
+                    + "parrafo.style.top='10px';"
+                    + "parrafo.style.fontSize='14px';"
+                    + "parrafo.style.zIndex='10000000';"
+                    + "parrafo.style.backgroundColor='gray';"
+                    + "parrafo.style.padding='10px';"
+                    + "parrafo.style.borderRadius='5px';"
+                    + "document.body.appendChild(parrafo);"
+                    + "</script>";
+
+            return codigo;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConsultarContenido.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
 
 }
