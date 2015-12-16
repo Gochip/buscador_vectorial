@@ -46,6 +46,9 @@ public class Documento {
         if (!Objects.equals(this.nombre, other.nombre)) {
             return false;
         }
+        if (!Objects.equals(this.enlace, other.enlace)) {
+            return false;
+        }
         return true;
     }
 

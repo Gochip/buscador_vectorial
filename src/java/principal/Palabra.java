@@ -47,7 +47,7 @@ public class Palabra implements Comparable<Palabra>{
     
     @Override
     public int compareTo(Palabra o) {
-        return texto.compareTo(o.texto);
+        return nr - o.nr;
     }
 
     @Override

@@ -41,10 +41,11 @@ public class Controlador {
 
         System.out.println(palabras);
         for (Palabra palabra : palabras) {
+            System.out.println(palabra.getTexto());
             List<Documento> cantidatosDePalabra = posteo.obtenerCandidatos(palabra, r);
             mejorarEnElRanking(candidatos, cantidatosDePalabra);
         }
-        
+
         return candidatos.subList(0, Math.min(r, candidatos.size()));
     }
 
