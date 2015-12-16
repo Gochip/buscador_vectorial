@@ -22,6 +22,8 @@ import javafx.scene.control.TreeSortMode;
 public class Controlador {
 
     private Vocabulario vocabulario;
+    
+    private static String SEPARADOR_PALABRAS = "[^a-zA-Z0-9ñÑáéíóú]+";
 
     public Controlador() {
         this.vocabulario = cargarVocabulario();
@@ -78,7 +80,7 @@ public class Controlador {
      * @return la palabra más importante.
      */
     private LinkedList<Palabra> getPalabras(String frase) {
-        String partes[] = frase.split(" ");
+        String partes[] = frase.split(SEPARADOR_PALABRAS);
         TreeSet<Palabra> arbol = new TreeSet<>();
         for (int i = 0; i < partes.length; i++) {
             String parte = partes[i];
