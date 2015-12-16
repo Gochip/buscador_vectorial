@@ -27,7 +27,7 @@ public class Principal extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String frase = request.getParameter("buscar");
+        String frase = request.getParameter("buscar").toLowerCase();
         Controlador controlador = new Controlador();
         long tiempoInicial = System.currentTimeMillis();
         List<? extends Documento> documentos = controlador.buscar(frase, 15);
